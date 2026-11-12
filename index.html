@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Портал погодження документів</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232563eb'/><path d='M9 16.5l4.5 4.5L23 11.5' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--text:#1f2937;--muted:#6b7280;--line:#e5e7eb;--blue:#2563eb;--blue-d:#1d4ed8;--green:#16a34a;--red:#dc2626;--amber:#d97706;--soft:#eff6ff;--radius:10px}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.45}
+a{color:var(--blue)}
+header{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.hwrap{max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
+.brand{font-weight:700;font-size:16px;display:flex;align-items:center;gap:10px;cursor:pointer}
+.brand i{width:28px;height:28px;border-radius:7px;background:var(--blue);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-style:normal;font-size:15px}
+.spacer{flex:1}
+.who{color:var(--muted);font-size:14px}
+main{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:18px}
+h1{font-size:22px;margin:0 0 6px}
+h2{font-size:17px;margin:0 0 14px}
+h3{font-size:15px;margin:0 0 10px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+button,.btn{font:inherit;border:1px solid var(--line);background:#fff;color:var(--text);padding:9px 16px;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+button:hover,.btn:hover{background:#f9fafb}
+button.primary,.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+button.primary:hover,.btn.primary:hover{background:var(--blue-d)}
+button.success{background:var(--green);border-color:var(--green);color:#fff}
+button.danger{background:#fff;border-color:#fecaca;color:var(--red)}
+button.danger:hover{background:#fef2f2}
+button:disabled{opacity:.55;cursor:not-allowed}
+button.link{border:none;background:none;color:var(--blue);padding:4px 6px}
+input,textarea{font:inherit;width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:var(--text)}
+input:focus,textarea:focus{outline:2px solid #bfdbfe;border-color:var(--blue)}
+textarea{min-height:80px;resize:vertical}
+label{display:block;font-weight:600;font-size:14px;margin:14px 0 6px}
+.hint{font-size:13px;color:var(--muted);margin-top:4px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.login{max-width:420px;margin:60px auto}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;flex-wrap:wrap}
+.tab{padding:10px 14px;border:none;border-bottom:2px solid transparent;border-radius:0;background:none;color:var(--muted);font-weight:600}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab .cnt{background:#e5e7eb;color:#374151;border-radius:10px;padding:0 7px;font-size:12px;margin-left:4px}
+.tab.active .cnt{background:var(--soft);color:var(--blue)}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:600}
+tr.click{cursor:pointer}
+tr.click:hover td{background:#f9fafb}
+.badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap}
+.st-review{background:#dbeafe;color:#1e40af}.st-secretary{background:#fef3c7;color:#92400e}.st-acquaint{background:#ede9fe;color:#5b21b6}.st-execution{background:#ffedd5;color:#9a3412}.st-done{background:#dcfce7;color:#166534}
+.ok{color:var(--green);font-weight:600}.no{color:var(--red);font-weight:600}.wait{color:var(--muted)}
+.steps{display:flex;gap:0;margin:16px 0 4px;flex-wrap:wrap}
+.step{flex:1;min-width:110px;text-align:center;font-size:12px;color:var(--muted);position:relative;padding-top:26px}
+.step:before{content:"";position:absolute;top:9px;left:0;right:0;height:3px;background:var(--line)}
+.step:first-child:before{left:50%}.step:last-child:before{right:50%}
+.step b{position:absolute;top:0;left:50%;transform:translateX(-50%);width:21px;height:21px;border-radius:50%;background:#fff;border:3px solid var(--line);z-index:1}
+.step.done b{background:var(--green);border-color:var(--green)}
+.step.done:before{background:var(--green)}
+.step.cur b{border-color:var(--blue);background:var(--soft)}
+.step.cur{color:var(--blue);font-weight:700}
+.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.hwrap .who{display:none}}
+.lockbox{border-radius:8px;padding:14px;margin:6px 0 4px}
+.lock-free{background:#f0fdf4;border:1px solid #bbf7d0}
+.lock-busy{background:#fffbeb;border:1px solid #fde68a}
+.lock-mine{background:var(--soft);border:1px solid #bfdbfe}
+.log{list-style:none;padding:0;margin:0}
+.log li{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.log li:last-child{border-bottom:none}
+.log .t{color:var(--muted);font-size:12px}
+.ai{background:#f3f4f6;border-radius:8px;padding:10px 12px;margin-top:6px;white-space:pre-wrap;font-size:13.5px}
+.notif{padding:10px 12px;border-radius:8px;cursor:pointer;display:flex;gap:10px}
+.notif:hover{background:#f9fafb}
+.notif.unread{background:var(--soft)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--blue);margin-top:7px;flex:none}
+.notif.read .dot{background:transparent}
+.bell{position:relative}
+.bell .n{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border-radius:10px;font-size:11px;padding:0 6px;font-weight:700}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#111827;color:#fff;padding:11px 18px;border-radius:8px;font-size:14px;z-index:50;max-width:90vw;box-shadow:0 4px 18px rgba(0,0,0,.2)}
+.toast.err{background:#991b1b}
+.empty{text-align:center;color:var(--muted);padding:30px 10px}
+.modal-bg{position:fixed;inset:0;background:rgba(17,24,39,.45);display:flex;align-items:center;justify-content:center;z-index:40;padding:20px}
+.modal{background:#fff;border-radius:12px;max-width:520px;width:100%;padding:22px}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid #cbd5e1;border-top-color:var(--blue);border-radius:50%;animation:s .8s linear infinite;vertical-align:middle}
+@keyframes s{to{transform:rotate(360deg)}}
+.loading{padding:40px;text-align:center;color:var(--muted)}
+.drop{border:2px dashed #cbd5e1;border-radius:10px;padding:22px;text-align:center;color:var(--muted);cursor:pointer}
+.drop.has{border-color:var(--green);color:var(--green);background:#f0fdf4}
+.pill{display:inline-block;background:#f3f4f6;border-radius:12px;padding:2px 10px;margin:2px 4px 2px 0;font-size:13px}
+</style>
+</head>
+<body>
+<header id="hdr" style="display:none">
+  <div class="hwrap">
+    <div class="brand" onclick="go('#/')"><i>✓</i>Портал погодження документів</div>
+    <div class="spacer"></div>
+    <span class="who" id="who"></span>
+    <button class="bell" onclick="go('#/notifications')" title="Сповіщення">🔔<span class="n" id="bellN" style="display:none"></span></button>
+    <button onclick="logout()">Вийти</button>
+  </div>
+</header>
+<main id="app"><div class="loading"><span class="spin"></span></div></main>
+
+<script>
+/* ===== Налаштування ===== */
+const API_URL = 'https://danit-n8n.duckdns.org/webhook/doc-portal-api';
+
+/* ===== Стан і утиліти ===== */
+const S = { token: null, user: null, dash: null, tab: 'review', doc: null, poll: null };
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} }
+};
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = iso => { if (!iso) return ''; const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }); };
+const fmtT = iso => { if (!iso) return ''; const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' }); };
+function toast(msg, err) { const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), err ? 5000 : 3000); }
+function go(h) { if (location.hash === h) route(); else location.hash = h; }
+
+async function api(action, payload = {}) {
+  const body = JSON.stringify({ action, token: S.token || '', payload });
+  let res;
+  try {
+    res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body });
+  } catch (e) {
+    // запасний варіант без CORS-preflight
+    res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body });
+  }
+  let data;
+  try { data = await res.json(); } catch (e) { throw new Error('Сервер не відповів коректно (' + res.status + ')'); }
+  if (!data.ok && data.code === 'auth') { S.token = null; store.del('dp_token'); go('#/login'); }
+  return data;
+}
+async function act(action, payload, okMsg) {
+  const r = await api(action, payload);
+  if (!r.ok) { toast(r.error || 'Помилка', true); return null; }
+  if (okMsg) toast(okMsg);
+  return r;
+}
+function busy(btn, on) { if (!btn) return; if (on) { btn.dataset.t = btn.innerHTML; btn.innerHTML = '<span class="spin"></span>'; btn.disabled = true; } else { btn.innerHTML = btn.dataset.t || btn.innerHTML; btn.disabled = false; } }
+
+/* ===== Маршрутизація ===== */
+window.addEventListener('hashchange', route);
+async function route() {
+  clearInterval(S.poll); S.poll = null;
+  const h = location.hash || '#/';
+  if (!S.token) { S.token = store.get('dp_token'); }
+  if (!S.token) { if (h.startsWith('#/doc/')) store.set('dp_back', h); $('#hdr').style.display = 'none'; return viewLogin(); }
+  $('#hdr').style.display = '';
+  if (!S.user) {
+    const r = await api('me'); if (!r.ok) return; S.user = r.user;
+  }
+  $('#who').textContent = S.user.name ? S.user.name + ' · ' + S.user.email : S.user.email;
+  if (!S.user.name) return viewName();
+  if (h.startsWith('#/doc/')) return viewDoc(decodeURIComponent(h.slice(6)));
+  if (h === '#/new') return viewNew();
+  if (h === '#/notifications') { S.tab = 'notifications'; return viewDash(); }
+  if (h === '#/login') { go('#/'); return; }
+  return viewDash();
+}
+
+/* ===== Вхід ===== */
+function viewLogin(step, email) {
+  const app = $('#app');
+  if (step !== 'code') {
+    app.innerHTML = `<div class="login card"><h1>Вхід до порталу</h1><p class="muted">Вкажіть робочу пошту — ми надішлемо одноразовий код.</p>
+      <form id="f"><label>Електронна пошта</label><input id="em" type="email" required autocomplete="email" placeholder="name@company.com" value="${esc(email || store.get('dp_email') || '')}">
+      <div style="margin-top:18px"><button class="primary" id="b">Отримати код</button></div></form>
+      <p class="hint" style="margin-top:18px">Доступ мають учасники, яких ініціатор додав до документа.</p></div>`;
+    $('#f').onsubmit = async e => {
+      e.preventDefault(); const b = $('#b'); const em = $('#em').value.trim(); busy(b, true);
+      const r = await api('request_code', { email: em }).catch(err => ({ ok: false, error: err.message })); busy(b, false);
+      if (!r.ok) return toast(r.error, true);
+      store.set('dp_email', em); viewLogin('code', em);
+    };
+  } else {
+    app.innerHTML = `<div class="login card"><h1>Введіть код</h1><p class="muted">Код надіслано на <b>${esc(email)}</b>. Він дійсний 10 хвилин.</p>
+      <form id="f"><label>Код із листа</label><input id="cd" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required placeholder="000000" style="font-size:22px;letter-spacing:6px;text-align:center">
+      <div class="row" style="margin-top:18px"><button class="primary" id="b">Увійти</button><button type="button" class="link" id="back">Змінити пошту</button></div></form></div>`;
+    $('#cd').focus();
+    $('#back').onclick = () => viewLogin('email', email);
+    $('#f').onsubmit = async e => {
+      e.preventDefault(); const b = $('#b'); busy(b, true);
+      const r = await api('verify_code', { email, code: $('#cd').value.trim() }).catch(err => ({ ok: false, error: err.message })); busy(b, false);
+      if (!r.ok) return toast(r.error, true);
+      S.token = r.token; S.user = r.user; store.set('dp_token', r.token);
+      const back = store.get('dp_back'); store.del('dp_back');
+      go(back || '#/');
+    };
+  }
+}
+function viewName() {
+  $('#app').innerHTML = `<div class="login card"><h1>Як вас звати?</h1><p class="muted">Ім'я бачитимуть інші учасники погодження.</p>
+    <form id="f"><label>Ім'я та прізвище</label><input id="nm" required maxlength="80" placeholder="Олена Коваленко"><div style="margin-top:18px"><button class="primary" id="b">Зберегти</button></div></form></div>`;
+  $('#f').onsubmit = async e => { e.preventDefault(); const b = $('#b'); busy(b, true); const r = await act('set_name', { name: $('#nm').value }); busy(b, false); if (r) { S.user = r.user; route(); } };
+}
+async function logout() { await api('logout').catch(() => {}); S.token = null; S.user = null; store.del('dp_token'); go('#/login'); }
+
+/* ===== Кабінет ===== */
+const STEPS = [['review', 'Погодження'], ['secretary', 'Секретар'], ['acquaint', 'Ознайомлення'], ['execution', 'Виконання'], ['done', 'Виконано']];
+const badge = d => `<span class="badge st-${esc(d.status)}">${esc(d.status_label)}</span>`;
+async function viewDash() {
+  const app = $('#app');
+  if (!S.dash) app.innerHTML = '<div class="loading"><span class="spin"></span> Завантаження…</div>';
+  const r = await api('dashboard'); if (!r.ok) { if (r.code !== 'auth') toast(r.error, true); return; }
+  S.dash = r; S.user = r.user; updateBell(r.unread);
+  const tabs = [
+    ['review', 'На погодженні', r.review.length],
+    ['initiated', 'Ініційовані мною', r.initiated.length],
+    ['acquaint', 'Ознайомлення', r.acquaint.filter(d => d.status === 'acquaint' && !d.my_ack).length],
+    ['execution', 'До виконання', r.execution.filter(d => d.status === 'execution').length]
+  ];
+  if (r.user.is_secretary) tabs.push(['secretary', 'Секретар', r.secretary.length], ['all', 'Усі документи', r.all.length]);
+  tabs.push(['notifications', 'Сповіщення', r.unread]);
+  if (!tabs.some(t => t[0] === S.tab)) S.tab = 'review';
+  app.innerHTML = `<div class="row" style="margin-bottom:18px"><div><h1>Мій кабінет</h1><div class="muted small">Документи, у яких ви берете участь</div></div><div class="spacer"></div><button class="primary" onclick="go('#/new')">＋ Новий документ</button></div>
+    <div class="card"><div class="tabs">${tabs.map(t => `<button class="tab ${t[0] === S.tab ? 'active' : ''}" data-t="${t[0]}">${t[1]}${t[2] ? `<span class="cnt">${t[2]}</span>` : ''}</button>`).join('')}</div><div id="tabBody"></div></div>`;
+  app.querySelectorAll('.tab').forEach(b => b.onclick = () => { S.tab = b.dataset.t; if (S.tab !== 'notifications' && location.hash === '#/notifications') history.replaceState(null, '', '#/'); viewDash(); });
+  const body = $('#tabBody');
+  if (S.tab === 'notifications') return renderNotifs(body, r.notifications);
+  const list = r[S.tab] || [];
+  const extra = {
+    review: d => d.lock_by ? `🔒 ${esc(d.lock_by_name)}` : (d.my_decision === 'approved' ? '<span class="ok">✓ Ви погодили</span>' : '<span class="wait">Очікує вашого рішення</span>'),
+    acquaint: d => d.my_ack ? `<span class="ok">✓ ${fmt(d.my_ack)}</span>` : (d.status === 'acquaint' ? '<span class="no">Потрібно ознайомитися</span>' : '<span class="wait">Ще не надіслано</span>'),
+    execution: d => d.status === 'done' ? '<span class="ok">✓ Виконано</span>' : '<span class="no">Очікує виконання</span>'
+  }[S.tab] || (d => `Раунд ${esc(d.round)} · погоджено ${d.approved}/${d.total}`);
+  if (!list.length) { body.innerHTML = '<div class="empty">Тут поки порожньо</div>'; return; }
+  body.innerHTML = `<table><thead><tr><th>Документ</th><th>Статус</th><th>Стан</th><th>Оновлено</th></tr></thead><tbody>${list.slice().reverse().map(d => `<tr class="click" data-id="${esc(d.doc_id)}"><td><b>${esc(d.title)}</b><div class="small muted">Ініціатор: ${esc(d.initiator_name)}</div></td><td>${badge(d)}</td><td class="small">${extra(d)}</td><td class="small muted">${fmt(d.updated_at)}</td></tr>`).join('')}</tbody></table>`;
+  body.querySelectorAll('tr.click').forEach(tr => tr.onclick = () => go('#/doc/' + encodeURIComponent(tr.dataset.id)));
+}
+function updateBell(n) { const b = $('#bellN'); if (n) { b.textContent = n; b.style.display = ''; } else b.style.display = 'none'; }
+function renderNotifs(body, list) {
+  if (!list.length) { body.innerHTML = '<div class="empty">Сповіщень немає</div>'; return; }
+  body.innerHTML = `<div class="row" style="justify-content:flex-end;margin-bottom:8px"><button class="link" id="allRead">Позначити всі прочитаними</button></div>` +
+    list.map(n => `<div class="notif ${n.read ? 'read' : 'unread'}" data-id="${esc(n.id)}" data-doc="${esc(n.doc_id)}"><span class="dot"></span><div><div>${esc(n.text)}</div><div class="small muted">${n.title ? esc(n.title) + ' · ' : ''}${fmt(n.ts)}</div></div></div>`).join('');
+  $('#allRead').onclick = async () => { await act('mark_read', {}); S.tab = 'notifications'; viewDash(); };
+  body.querySelectorAll('.notif').forEach(el => el.onclick = async () => { api('mark_read', { ids: [el.dataset.id] }); if (el.dataset.doc) go('#/doc/' + encodeURIComponent(el.dataset.doc)); });
+}
+
+/* ===== Новий документ ===== */
+function viewNew() {
+  let file = null;
+  $('#app').innerHTML = `<div class="row" style="margin-bottom:18px"><button onclick="go('#/')">← Кабінет</button></div>
+  <div class="card" style="max-width:720px"><h1>Новий документ на погодження</h1><p class="muted">Ви — ініціатор. Учасники отримають запрошення на пошту.</p>
+  <form id="f">
+    <label>Назва документа</label><input id="tt" required maxlength="200" placeholder="Протокол наради № 12 від 05.11.2026">
+    <label>Проєкт документа (Word, .docx)</label>
+    <div class="drop" id="drop">Натисніть, щоб обрати файл, або перетягніть його сюди</div>
+    <input type="file" id="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
+    <label>Учасники спільного редагування</label><textarea id="pp" placeholder="colleague@company.com, partner@counterparty.com"></textarea>
+    <div class="hint">Колеги та представники контрагента. Пошти через кому або з нового рядка. Ви також є учасником.</div>
+    <label>Посадові особи для ознайомлення</label><textarea id="aq" placeholder="director@company.com, lawyer@counterparty.com"></textarea>
+    <div class="hint">Отримають PDF після затвердження секретарем. Секретар може доповнити список.</div>
+    <label>Кінцевий виконавець</label><input id="ex" type="email" required placeholder="executor@company.com">
+    <div class="hint">Для редагування Google Docs учасникам потрібен Google-акаунт на цю пошту.</div>
+    <div class="row" style="margin-top:22px"><button class="primary" id="b">Створити і розіслати</button><button type="button" onclick="go('#/')">Скасувати</button></div>
+  </form></div>`;
+  const drop = $('#drop'), inp = $('#file');
+  const setFile = f => {
+    if (!f) return;
+    if (!/\.docx$/i.test(f.name)) return toast('Потрібен файл .docx', true);
+    if (f.size > 10 * 1024 * 1024) return toast('Файл більший за 10 МБ', true);
+    file = f; drop.classList.add('has'); drop.textContent = '📄 ' + f.name + ' (' + Math.round(f.size / 1024) + ' КБ)';
+    if (!$('#tt').value) $('#tt').value = f.name.replace(/\.docx$/i, '');
+  };
+  drop.onclick = () => inp.click(); inp.onchange = () => setFile(inp.files[0]);
+  drop.ondragover = e => { e.preventDefault(); }; drop.ondrop = e => { e.preventDefault(); setFile(e.dataTransfer.files[0]); };
+  $('#f').onsubmit = async e => {
+    e.preventDefault(); if (!file) return toast('Оберіть Word-файл', true);
+    const b = $('#b'); busy(b, true);
+    const b64 = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1]); r.onerror = no; r.readAsDataURL(file); });
+    const r = await act('create_document', { title: $('#tt').value.trim(), filename: file.name, file_b64: b64, participants: $('#pp').value, acquaint: $('#aq').value, executor: $('#ex').value.trim() }, 'Документ створено, учасникам надіслано запрошення').catch(err => { toast(err.message, true); return null; });
+    busy(b, false);
+    if (r) go('#/doc/' + encodeURIComponent(r.doc_id));
+  };
+}
+
+/* ===== Документ ===== */
+const ACTIONS = {
+  created: 'створив(ла) документ', lock: 'взяв(ла) документ на редагування', queue: 'став(ла) у чергу на редагування',
+  edit_finished: 'завершив(ла) правки', lock_expired: 'сесію редагування завершено автоматично', ai_summary: 'AI-резюме змін',
+  approved: 'погодив(ла) редакцію', rejected: 'відхилив(ла) редакцію', to_secretary: 'документ передано секретарю',
+  secretary_approved: 'секретар затвердив документ і запустив у роботу', secretary_returned: 'секретар повернув на доопрацювання',
+  acquaint_added: 'додано осіб для ознайомлення', acknowledged: 'ознайомився(лася)', to_execution: 'документ передано на виконання',
+  done: 'документ виконано', participants_changed: 'змінено склад учасників'
+};
+async function viewDoc(id, silent) {
+  const app = $('#app');
+  if (!silent) app.innerHTML = '<div class="loading"><span class="spin"></span> Завантаження документа…</div>';
+  const r = await api('doc_get', { doc_id: id });
+  if (!r.ok) { if (r.code === 'auth') store.set('dp_back', location.hash); else app.innerHTML = `<div class="card empty">${esc(r.error)}<div style="margin-top:14px"><button onclick="go('#/')">До кабінету</button></div></div>`; return; }
+  S.doc = r.doc; renderDoc();
+  clearInterval(S.poll); S.poll = setInterval(async () => {
+    if (document.hidden || document.querySelector('.modal-bg') || (document.activeElement && /TEXTAREA|INPUT/.test(document.activeElement.tagName))) return;
+    const x = await api('doc_get', { doc_id: id }).catch(() => null); if (x && x.ok && location.hash.startsWith('#/doc/')) { S.doc = x.doc; renderDoc(); }
+  }, 30000);
+}
+function renderDoc() {
+  const d = S.doc, m = d.me; const idx = STEPS.findIndex(s => s[0] === d.status);
+  const stepper = `<div class="steps">${STEPS.map((s, i) => `<div class="step ${i < idx || d.status === 'done' ? 'done' : ''} ${i === idx && d.status !== 'done' ? 'cur' : ''}"><b></b>${s[1]}</div>`).join('')}</div>`;
+  const locked = !!d.lock_by && !(d.lock_until && new Date(d.lock_until) < new Date());
+  let lockHtml = '';
+  if (d.status === 'review') {
+    if (m.lock_mine) lockHtml = `<div class="lockbox lock-mine"><b>✏️ Ви редагуєте документ</b><div class="small muted">Блокування до ${fmtT(d.lock_until)}. Інші учасники бачать документ лише для читання.</div>
+      <div class="row" style="margin-top:12px"><a class="btn primary" href="${esc(d.gdoc_url)}" target="_blank" rel="noopener">Відкрити в Google Docs ↗</a><button class="success" id="unlock">Завершити правки</button><button id="extend">Продовжити на 60 хв</button></div></div>`;
+    else if (locked) lockHtml = `<div class="lockbox lock-busy"><b>🔒 Редагує: ${esc(d.lock_by_name)}</b><div class="small muted">З ${fmtT(d.lock_since)} до ${fmtT(d.lock_until)}${d.queue.length ? ' · у черзі: ' + d.queue.map(q => esc(q.name)).join(', ') : ''}</div>
+      <div class="row" style="margin-top:12px">${m.is_participant ? (m.in_queue ? `<span class="small">Ви в черзі — повідомимо, коли документ звільниться.</span><button class="link" id="leaveQ">Вийти з черги</button>` : `<button id="lock">Стати в чергу</button>`) : ''}<a class="btn" href="${esc(d.gdoc_url)}" target="_blank" rel="noopener">Переглянути ↗</a></div></div>`;
+    else lockHtml = `<div class="lockbox lock-free"><b>Документ вільний для редагування</b><div class="small muted">Візьміть документ на редагування, внесіть правки в Google Docs і натисніть «Завершити правки». Усі погодження після цього обнуляться.</div>
+      <div class="row" style="margin-top:12px">${m.is_participant ? `<button class="primary" id="lock">Взяти на редагування</button>` : ''}<a class="btn" href="${esc(d.gdoc_url)}" target="_blank" rel="noopener">Переглянути ↗</a></div></div>`;
+  } else if (d.gdoc_url) lockHtml = `<div class="row" style="margin:6px 0"><a class="btn" href="${esc(d.gdoc_url)}" target="_blank" rel="noopener">Переглянути документ ↗</a></div>`;
+
+  let decide = '';
+  if (d.status === 'review' && m.is_participant) {
+    const mine = d.participants.find(p => p.email.toLowerCase() === m.email);
+    decide = `<div class="card"><h2>Ваше рішення щодо редакції (раунд ${esc(d.round)})</h2>${mine && mine.decision === 'approved' ? `<p class="ok">✓ Ви погодили цю редакцію ${fmt(mine.decision_at)}</p>` : ''}
+      ${m.can_decide ? `<div class="row"><button class="success" id="approve" ${mine && mine.decision === 'approved' ? 'disabled' : ''}>✓ Погоджую редакцію</button><button class="danger" id="reject">Відхилити</button></div>` : `<p class="muted small">Рішення можна прийняти після завершення поточної сесії редагування.</p>`}</div>`;
+  }
+  let sec = '';
+  if (m.can_secretary) sec = `<div class="card" style="border-color:#fde68a"><h2>Рішення корпоративного секретаря</h2><p class="muted small">Усі учасники погодили редакцію. Затвердіть документ і запустіть у роботу, або поверніть на доопрацювання.</p>
+    <label>Додати осіб для ознайомлення (необов'язково)</label><textarea id="secAq" placeholder="email1@company.com, email2@company.com"></textarea>
+    <div class="row" style="margin-top:14px"><button class="success" id="secOk">Затвердити і запустити в роботу</button><button class="danger" id="secBack">Повернути на доопрацювання</button></div></div>`;
+  else if (m.can_add_acquaint) sec = `<div class="card"><h2>Додати осіб для ознайомлення</h2><textarea id="secAq2" placeholder="email@company.com"></textarea><div style="margin-top:10px"><button id="addAq">Додати і надіслати PDF</button></div></div>`;
+  const ack = m.can_ack ? `<div class="card" style="border-color:#ddd6fe"><h2>Ознайомлення</h2><p class="muted small">Документ затверджено. Ознайомтеся з ним і підтвердьте — дата буде зафіксована.</p><button class="success" id="ack">✓ Ознайомлений(а)</button></div>` : '';
+  const done = m.can_done ? `<div class="card" style="border-color:#fed7aa"><h2>Виконання</h2><p class="muted small">Документ передано вам на виконання.</p><label>Коментар (необов'язково)</label><textarea id="doneC"></textarea><div style="margin-top:10px"><button class="success" id="done">Позначити «Виконано»</button></div></div>` : '';
+
+  const parts = `<table><thead><tr><th>Учасник</th><th>Рішення</th></tr></thead><tbody>${d.participants.map(p => `<tr><td>${esc(p.name)}${p.name !== p.email ? `<div class="small muted">${esc(p.email)}</div>` : ''}${p.email.toLowerCase() === d.initiator.toLowerCase() ? ' <span class="pill">ініціатор</span>' : ''}</td><td class="small">${p.decision === 'approved' ? `<span class="ok">✓ Погоджено</span><div class="muted">${fmt(p.decision_at)}</div>` : '<span class="wait">Очікується</span>'}${p.comment ? `<div class="muted">«${esc(p.comment)}»</div>` : ''}</td></tr>`).join('')}</tbody></table>
+    ${m.can_edit_participants ? `<div style="margin-top:10px"><button class="link" id="editP">Змінити склад учасників</button></div>` : ''}`;
+  const acq = d.acquaint.length ? `<table><tbody>${d.acquaint.map(a => `<tr><td>${esc(a.name)}${a.name !== a.email ? `<div class="small muted">${esc(a.email)}</div>` : ''}</td><td class="small">${a.ack_at ? `<span class="ok">✓ ${fmt(a.ack_at)}</span>` : (['acquaint'].includes(d.status) ? '<span class="no">Не ознайомлений</span>' : '<span class="wait">Після затвердження</span>')}</td></tr>`).join('')}</tbody></table>` : '<p class="muted small">Не вказано</p>';
+  const log = `<ul class="log">${d.log.map(l => `<li><div><b>${l.email === 'system' ? 'Система' : esc(l.name)}</b> — ${esc(ACTIONS[l.action] || l.action)}</div>${l.action === 'ai_summary' ? `<div class="ai">${esc(l.details)}</div>` : (l.details && !['lock'].includes(l.action) ? `<div class="small muted">${esc(l.details)}</div>` : '')}<div class="t">${fmt(l.ts)}</div></li>`).join('')}</ul>`;
+
+  $('#app').innerHTML = `<div class="row" style="margin-bottom:14px"><button onclick="go('#/')">← Кабінет</button><div class="spacer"></div><button class="link" onclick="viewDoc(S.doc.doc_id)">⟳ Оновити</button></div>
+  <div class="card"><div class="row"><div style="flex:1;min-width:240px"><h1>${esc(d.title)}</h1><div class="muted small">Ініціатор: ${esc(d.initiator_name)} · Секретар: ${esc(d.secretary_name)} · Виконавець: ${esc(d.executor_name)} · Раунд редагування: ${esc(d.round)}</div></div>${badge(d)}</div>${stepper}${lockHtml}</div>
+  ${sec}${ack}${done}
+  <div class="grid"><div>${decide}<div class="card"><h2>Історія</h2>${log}</div></div>
+  <div><div class="card"><h2>Учасники погодження <span class="muted small">(${d.approved}/${d.total})</span></h2>${parts}</div><div class="card"><h2>Ознайомлення</h2>${acq}</div></div></div>`;
+
+  const on = (sel, fn) => { const el = $(sel); if (el) el.onclick = () => fn(el); };
+  const reload = r => { if (r && r.doc) { S.doc = r.doc; renderDoc(); } };
+  on('#lock', async b => { busy(b, true); const r = await act('lock', { doc_id: d.doc_id }); busy(b, false); if (!r) return; reload(r); if (r.queued) toast('Ви в черзі: позиція ' + r.position); else { toast('Документ ваш на ' + 60 + ' хв'); window.open(r.doc.gdoc_url, '_blank'); } });
+  on('#extend', async b => { busy(b, true); reload(await act('lock', { doc_id: d.doc_id }, 'Блокування продовжено')); });
+  on('#leaveQ', async () => reload(await act('leave_queue', { doc_id: d.doc_id })));
+  on('#unlock', () => modal('Завершити правки', 'Коротко опишіть, що змінили (необов\'язково). Учасники отримають сповіщення з AI-резюме змін, а всі погодження обнуляться.', 'Завершити правки', false, async c => reload(await act('unlock', { doc_id: d.doc_id, comment: c }, 'Правки збережено, учасників повідомлено'))));
+  on('#approve', async b => { busy(b, true); reload(await act('decide', { doc_id: d.doc_id, decision: 'approved' }, 'Редакцію погоджено')); });
+  on('#reject', () => modal('Відхилити редакцію', 'Вкажіть причину. Погодження всіх учасників буде обнулено, почнеться новий раунд.', 'Відхилити', true, async c => reload(await act('decide', { doc_id: d.doc_id, decision: 'rejected', comment: c }, 'Редакцію відхилено'))));
+  on('#secOk', async b => { busy(b, true); reload(await act('secretary_approve', { doc_id: d.doc_id, acquaint: $('#secAq').value }, 'Документ затверджено і запущено в роботу')); });
+  on('#secBack', () => modal('Повернути на доопрацювання', 'Опишіть, що потрібно доопрацювати. Учасники отримають сповіщення.', 'Повернути', true, async c => reload(await act('secretary_return', { doc_id: d.doc_id, comment: c }, 'Документ повернуто'))));
+  on('#addAq', async b => { busy(b, true); reload(await act('add_acquaint', { doc_id: d.doc_id, emails: $('#secAq2').value }, 'Додано')); });
+  on('#ack', async b => { busy(b, true); reload(await act('ack', { doc_id: d.doc_id }, 'Ознайомлення зафіксовано')); });
+  on('#done', async b => { busy(b, true); reload(await act('executor_done', { doc_id: d.doc_id, comment: $('#doneC').value }, 'Позначено як виконано')); });
+  on('#editP', () => editParticipants());
+}
+function modal(title, text, btnText, required, onOk) {
+  const bg = document.createElement('div'); bg.className = 'modal-bg';
+  bg.innerHTML = `<div class="modal"><h2>${esc(title)}</h2><p class="muted small">${esc(text)}</p><textarea id="mc"></textarea><div class="row" style="margin-top:14px;justify-content:flex-end"><button id="mx">Скасувати</button><button class="primary" id="mo">${esc(btnText)}</button></div></div>`;
+  document.body.appendChild(bg); bg.querySelector('#mc').focus();
+  bg.querySelector('#mx').onclick = () => bg.remove();
+  bg.querySelector('#mo').onclick = async () => { const c = bg.querySelector('#mc').value.trim(); if (required && !c) return toast('Заповніть коментар', true); const b = bg.querySelector('#mo'); busy(b, true); await onOk(c); bg.remove(); };
+}
+function editParticipants() {
+  const d = S.doc;
+  const bg = document.createElement('div'); bg.className = 'modal-bg';
+  bg.innerHTML = `<div class="modal"><h2>Склад учасників</h2>
+    <label>Додати учасників</label><textarea id="pa" placeholder="email@company.com"></textarea>
+    <label>Прибрати учасників</label><div>${d.participants.filter(p => p.email.toLowerCase() !== d.initiator.toLowerCase()).map(p => `<label style="font-weight:400;margin:4px 0"><input type="checkbox" value="${esc(p.email)}" style="width:auto;margin-right:8px">${esc(p.name)} <span class="muted small">${esc(p.email)}</span></label>`).join('') || '<span class="muted small">Немає</span>'}</div>
+    <p class="hint">Додавання нового учасника обнуляє погодження.</p>
+    <div class="row" style="margin-top:14px;justify-content:flex-end"><button id="mx">Скасувати</button><button class="primary" id="mo">Зберегти</button></div></div>`;
+  document.body.appendChild(bg);
+  bg.querySelector('#mx').onclick = () => bg.remove();
+  bg.querySelector('#mo').onclick = async () => {
+    const rem = [...bg.querySelectorAll('input[type=checkbox]:checked')].map(c => c.value);
+    const b = bg.querySelector('#mo'); busy(b, true);
+    const r = await act('update_participants', { doc_id: d.doc_id, add: bg.querySelector('#pa').value, remove: rem }, 'Склад оновлено'); busy(b, false);
+    if (r) { bg.remove(); S.doc = r.doc; renderDoc(); }
+  };
+}
+
+route();
+</script>
+</body>
+</html>
